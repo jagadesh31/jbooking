@@ -1,5 +1,8 @@
-import { Link } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import { useRef } from 'react'
+import { sendClicks } from '../services/main'
+import { authContext } from '../contexts/authContext'
+import { useContext } from 'react'
 
 export function MoviesContainer (props) {
   let scrollRef = useRef(null)
@@ -10,7 +13,7 @@ export function MoviesContainer (props) {
   }
 
 
-  console.log(props)
+
 
   return (
     <div className='bg-blackMedium w-full'>
@@ -48,17 +51,19 @@ export function MoviesContainer (props) {
 }
 
 export function ShowsCard (props) {
-  let { show } = props
+    const { user } = useContext(authContext)
+   const navigate = useNavigate();
+  let { show } = props;
   return (
     <div className='cardContainer cursor-pointer'>
       <div className='imageContainer overflow-hidden rounded-xl h-[185px] w-[130px] md:h-[285px] md:w-[200px] border-[#636363] hover:border-white border-2'>
-        <Link to={`/${show.type}/${show._id}`} state={show}>
+        <button onClick={(e)=>{sendClicks({"userId" :user?._id,"notes" :`clicked ${show.title} movie`});return navigate(`/${show.type}/${show._id}`)}} className='cursor-pointer'>
           <img
             src={show.poster}
             draggable='false'
             className='transition duration-500 ease-in-out hover:scale-105'
           />
-        </Link>
+        </button>
       </div>
     </div>
   )

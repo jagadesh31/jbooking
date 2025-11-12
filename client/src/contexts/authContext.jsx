@@ -29,7 +29,6 @@ export const AuthProvider = ({ children }) => {
             }
           })
           .then(res => {
-            console.log(res.data[0])
             setUser(res.data[0]);
           })
   }}
@@ -39,7 +38,6 @@ export const AuthProvider = ({ children }) => {
     axios
       .put(`${BASE_URL}/auth/update?id=${user._id}`, {'updateFields':updateFields})
       .then(res => {
-        console.log('updatedSuccessfully',res.data)
           setUser(res.data.user);
       })
       .catch(err => {});
@@ -48,30 +46,26 @@ export const AuthProvider = ({ children }) => {
 
 const getLinkStatus = async (user, setLoading, setPayData, navigate) => {
   if (!user) {
-    console.log('No user found, exiting getLinkStatus');
     setLoading(false);
     return;
   }
 
   const linkId = localStorage.getItem('link_id');
   if (!linkId) {
-    console.log('No link_id found in localStorage, navigating home');
     setLoading(false);
     navigate('/home');
     return;
   }
 
   setLoading(true);
-  console.log('Starting payment verification for linkId:', linkId);
 
   try {
     const { data } = await axios.get(`${BASE_URL}/payment/verify?link_id=${linkId}`);
 
-    console.log('Payment verification data:', data);
 
     if (data.status === 'PAID') {
       await axios.post(`${BASE_URL}/email/invoice?email=${user.email}`, data);
-      console.log('Invoice sent successfully');
+
     }
 
     if (['PAID', 'FAILED'].includes(data.status)) {
@@ -84,7 +78,6 @@ const getLinkStatus = async (user, setLoading, setPayData, navigate) => {
     console.error('Payment verification error:', error);
     setPayData({ status: 'ERROR', message: 'Failed to verify payment. Please try again.' });
   } finally {
-    console.log('Payment verification complete, stopping loader');
     setLoading(false);
   }
 };
@@ -96,7 +89,6 @@ const getLinkStatus = async (user, setLoading, setPayData, navigate) => {
       .post(`${BASE_URL}/payment/create-link?totalAmount=${body.amount}`,body)
       .then(res => {
         localStorage.setItem('link_id',res.data.link_id);
-        console.log(res.data);
         window.location.href = res.data.link_url;
       })
   }

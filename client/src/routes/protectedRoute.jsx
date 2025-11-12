@@ -8,8 +8,9 @@ import { authContext } from '../contexts/authContext'
 import Header from '../components/header'
 import Footer from '../components/footer'
 import Loader from '../components/loader'
+import Monitor from '../services/monitor'
 
-// import jwt from "jsonwebtoken";
+
 
 export function ProtectedRoute({ allowedRoles }) {
   const { user, authLoading } = useContext(authContext);
@@ -27,10 +28,11 @@ export function ProtectedRoute({ allowedRoles }) {
     return <Navigate to="/unauthorized" replace />;
   }
 
-  return ( <>
-       <Header/>
-       <Outlet/>
-       <Footer/>
-      </>)
+  return ( 
+        <>
+          <Header />
+          <Outlet />
+          <Footer />
+        </>)
 }
 

@@ -79,6 +79,7 @@ export function Login() {
   const dauthLogin = () => {
     const CLIENT_ID = "lAOrfPy9uph9nGYe";
     const REDIRECT_URI = `${BASE_URL}/auth/dauth/callback`;
+        console.log(`${BASE_URL}/auth/google/callback`)
     const SCOPE = "email+user+profile+openid";
     window.location.href = `https://auth.delta.nitt.edu/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code&scope=${encodeURIComponent(
       SCOPE

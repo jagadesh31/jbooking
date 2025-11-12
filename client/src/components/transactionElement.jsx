@@ -1,5 +1,5 @@
 export function TransactionElement({transaction}){
-  console.log(transaction)
+
  
   if(transaction.purpose==='movie'){
   return(

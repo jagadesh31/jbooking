@@ -2,10 +2,10 @@ import './App.css'
 import {
   createBrowserRouter,
   RouterProvider,
-  useNavigate,
-  Navigate
+  Navigate,
+  useLocation
 } from 'react-router-dom'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useRef } from 'react'
 
 
 import 'react-toastify/dist/ReactToastify.css';
@@ -53,6 +53,8 @@ import PageNotFound from './pages/shared/pageNotFound.jsx'
 import {PaymentRedirecting} from './pages/shared/paymentRedirecting.jsx'
 import { ShowsInfo } from './pages/shared/showsInfo.jsx'
 import { Shows } from './pages/shared/shows.jsx';
+import Monitor from './services/monitor.jsx';
+import { monitorStatus } from './services/main.js';
 
 // import { SocketProvider } from './contexts/socketContext.jsx'
 
@@ -255,10 +257,11 @@ let router = createBrowserRouter([
 
 function App () {
 
+
   return (
     // <SocketProvider>
       <RouterProvider router={router}>
-        <ToastContainer position="top-right" autoClose={3000} />
+        <Monitor/>
       </RouterProvider>
     // </SocketProvider>
   )

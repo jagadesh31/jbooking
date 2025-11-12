@@ -194,8 +194,8 @@ export function AdminDashboard(){
     datasets: [
       {
         label: 'Transactions',
-        data: [totalTransactions, totalSuccessfulTransactions, totalFailedTransactions],
-        backgroundColor: ['blue', 'green', 'red'],
+        data: [totalSuccessfulTransactions, totalFailedTransactions],
+        backgroundColor: ['green', 'red'],
         borderRadius: 1
       }
     ]

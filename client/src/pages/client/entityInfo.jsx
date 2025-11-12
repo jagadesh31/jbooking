@@ -19,7 +19,6 @@ function MovieInfo () {
       axios
         .get(`${BASE_URL}/movie/find?movieId=${_id}`)
         .then(res => {
-          console.log(res)
           setData(res.data[0])
           setLoading(false)
         })
@@ -28,7 +27,6 @@ function MovieInfo () {
       axios
         .get(`${BASE_URL}/concert/find?concertId=${_id}`)
         .then(res => {
-          console.log(res)
           setData(res.data[0])
           setLoading(false)
         })

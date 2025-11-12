@@ -30,11 +30,11 @@ export function Home() {
       try {
         let res
         if (currentOption === 'movies') {
-          res = await axios.get(`${BASE_URL}/movie/find?fields=_id,genre,poster,type`, {
+          res = await axios.get(`${BASE_URL}/movie/find?fields=_id,genre,poster,type,title`, {
             cancelToken: cancelToken.token
           })
         } else if (currentOption === 'concerts') {
-          res = await axios.get(`${BASE_URL}/concert/find?fields=_id,genre,poster,type`, {
+          res = await axios.get(`${BASE_URL}/concert/find?fields=_id,genre,poster,type,title`, {
             cancelToken: cancelToken.token
           })
         } else {

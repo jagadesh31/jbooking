@@ -8,7 +8,8 @@ import { authContext } from '../contexts/authContext'
 import Header from '../components/header'
 import Footer from '../components/footer'
 import Loader from '../components/loader'
-// import jwt from "jsonwebtoken";
+import Monitor from '../services/monitor'
+
 
 export function PublicRoute () {
   const { user, setUser,authLoading} = useContext(authContext)
@@ -18,11 +19,11 @@ export function PublicRoute () {
     return(
     <div className='bg-black w-screen'>
       {authLoading?<Loader/>:
-      <>
-       <Header/>
-       <Outlet/>
-       <Footer/>
-      </>
+        <>
+          <Header />
+          <Outlet />
+          <Footer />
+        </>
       }
 
     </div>)
