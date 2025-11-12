@@ -390,68 +390,56 @@ const userInfo = await axios.post(
     res.status(500).send('dauth Error');
 }}
 
+const jauthCallback = async (req, res) => {
+    const code = req.query.code;
 
-const jauthLogin = async (req, res) => {
-  const code = req.query.code;
+    if (!code) return res.status(400).send('No code found');
 
-  if (!code) return res.status(400).send('No code found');
+    try {
+        // Exchange code for access token with JAuth
+        const tokenResponse = await axios.get('https://jauth-server.jagadesh31.tech/user/getToken', {
+            params: {
+                code,
+                client_id: "49965bd5a5d6b7a9a7dcba1ad66c9979adfc1a8fcf8b85cf30f3ae3695591712",
+                client_secret: "95a3b2a986680019ad02f9b704c1de25ac436728feb7afa0acf2180086c192b4",
+                redirect_uri: `${process.env.server_url}/auth/jauth/callback`
+            }
+        });
 
-  try {
-   
-    const { data } = await axios.post('https://jauth-server.jagadesh31.tech/user/getToken', null, {
-      params: {
-        code,
-        client_id: "49965bd5a5d6b7a9a7dcba1ad66c9979adfc1a8fcf8b85cf30f3ae3695591712",
-        client_secret: "95a3b2a986680019ad02f9b704c1de25ac436728feb7afa0acf2180086c192b4",
-        redirect_uri: `${process.env.server_url}/auth/jauth/callback`,
-        grant_type: 'authorization_code'
-      },
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    });
+        const { access_token } = tokenResponse.data;
 
-    const { access_token } = data;
+        // Get user info from JAuth
+        const userResponse = await axios.get('https://jauth-server.jagadesh31.tech/user/getUser', {
+            headers: {
+                Authorization: `Bearer ${access_token}`
+            }
+        });
 
+        const jauthUser = userResponse.data;
+        
 
-    const userInfo = await axios.get(`https://jauth-server.jagadesh31.tech/user/getUser`, {
-      headers: {
-        Authorization: `Bearer ${access_token}`
-      }
-    });
+        let user = await userModel.findOne({ email: jauthUser.email });
+        if (!user) {
+            user = await userModel.create({
+                email: jauthUser.email,
+                username: jauthUser.username,
+                name: jauthUser.name,
+                isVerified: true,
+                amountAvailable: 200
+            });
+        }
 
-    console.log('JAuth User Info:', userInfo.data);
-
-    let user;
-
-    user = await userModel.findOne({ email: userInfo.data.email });
-
-    if (!user) {
-      user = {
-        role: 'client',
-        email: userInfo.data.email,
-        username: userInfo.data.username,
-        isVerified: true,
-        amountAvailable: 200
-      };
-
-      user = await userModel.create(user);
+        // Generate third-party app's token
+        const token = generateToken(user._id);
+        
+        // Redirect to frontend with token
+        res.redirect(`${process.env.client_url}/login?token=${token}`);
+        
+    } catch (error) {
+        console.error('JAuth callback error:', error);
+        res.redirect(`${process.env.client_url}/login?error=jauth_failed`);
     }
-
-    console.log(user);
-
-    let token = generateToken(user._id);
-    console.log(token);
-    
-
-    res.redirect(`${process.env.client_url}/login?token=${token}`);
-
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('JAuth OAuth Error');
-  }
 };
-
 
 
 module.exports = {registerUser,loginUser,autoLoginUser,updatePassword,changePassword,updateUser,findUser,uploadImage,deleteUser,googleLogin,dauthLogin,jauthLogin};
