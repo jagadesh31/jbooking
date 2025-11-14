@@ -390,26 +390,28 @@ const userInfo = await axios.post(
     res.status(500).send('dauth Error');
 }}
 
-const jauthCallback = async (req, res) => {
+const jauthLogin = async (req, res) => {
     const code = req.query.code;
+
+    console.log(code)
 
     if (!code) return res.status(400).send('No code found');
 
     try {
         // Exchange code for access token with JAuth
-        const tokenResponse = await axios.get('https://jauth-server.jagadesh31.tech/user/getToken', {
+        const tokenResponse = await axios.get(`${process.env.JAUTH_BASE_URL}/user/getToken`, {
             params: {
                 code,
-                client_id: "49965bd5a5d6b7a9a7dcba1ad66c9979adfc1a8fcf8b85cf30f3ae3695591712",
-                client_secret: "95a3b2a986680019ad02f9b704c1de25ac436728feb7afa0acf2180086c192b4",
+                client_id: process.env.JAUTH_CLIENT_ID, 
+                client_secret: process.env.JAUTH_CLIENT_SECRET,
                 redirect_uri: `${process.env.server_url}/auth/jauth/callback`
             }
         });
 
         const { access_token } = tokenResponse.data;
 
-        // Get user info from JAuth
-        const userResponse = await axios.get('https://jauth-server.jagadesh31.tech/user/getUser', {
+
+        const userResponse = await axios.get(`${process.env.JAUTH_BASE_URL}/user/getUser`, {
             headers: {
                 Authorization: `Bearer ${access_token}`
             }
@@ -429,10 +431,11 @@ const jauthCallback = async (req, res) => {
             });
         }
 
-        // Generate third-party app's token
+
         const token = generateToken(user._id);
         
-        // Redirect to frontend with token
+        console.log(user);
+
         res.redirect(`${process.env.client_url}/login?token=${token}`);
         
     } catch (error) {

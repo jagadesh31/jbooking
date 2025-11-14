@@ -88,11 +88,11 @@ export function Login() {
 
 
 const jauthLogin = () => {
-    const CLIENT_ID = "49965bd5a5d6b7a9a7dcba1ad66c9979adfc1a8fcf8b85cf30f3ae3695591712";
+    const CLIENT_ID = import.meta.env.VITE_JAUTH_CLIENT_ID;
     const REDIRECT_URI = `${window.location.origin}/auth/jauth/callback`;
     const SCOPE = "profile email";
     
-    window.location.href = `https://jauth-server.jagadesh31.tech/user/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}`;
+    window.location.href = `${import.meta.env.VITE_JAUTH_BASE_URL}/user/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}`;
 };
 
   if (user) return <Navigate to={from} replace />;
