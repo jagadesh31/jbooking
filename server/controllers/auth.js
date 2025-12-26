@@ -403,7 +403,7 @@ const jauthLogin = async (req, res) => {
       code,
       client_id: process.env.JAUTH_CLIENT_ID,
       client_secret: process.env.JAUTH_CLIENT_SECRET,
-      redirect_uri: `${process.env.SERVER_BASE_URL}/user/jauth/callback`
+      redirect_uri: `${process.env.server_url}/auth/jauth/callback`
   }
 );
 

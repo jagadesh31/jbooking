@@ -93,7 +93,7 @@ const jauthLogin = () => {
     const SCOPE = "profile email";
     console.log(`${import.meta.env.VITE_JAUTH_BASE_URL}/oauth/authorize`);
     
-    window.location.href = `${import.meta.env.VITE_JAUTH_BASE_URL}/oauth/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}`;
+    window.location.href = `${import.meta.env.VITE_JAUTH_BASE_URL}/oauth/authorize?response_type=code&scope=${SCOPE}&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}`;
 };
 
   if (user) return <Navigate to={from} replace />;
