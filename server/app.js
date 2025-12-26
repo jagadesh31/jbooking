@@ -35,7 +35,7 @@ let app = express();
 //   credentials: true, // if you're sending cookies/auth
 // };
 
-// app.use(cors());
+app.use(cors());
 
 app.use((req, res, next) => {
   const allowedOrigin = process.env.client_url; 
@@ -88,6 +88,10 @@ app.get('/pdf/download',async (req,res)=>{
 
 app.get('/',(req,res)=>{
 res.send('hello everyone')
+})
+
+app.get('/DFAS',(req,res)=>{
+res.send('hello DFASDF everyone')
 })
 
 const PORT = process.env.PORT || 5000;

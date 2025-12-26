@@ -15,6 +15,7 @@ function generateToken(userId){
   return jwt.sign(payload,process.env.SECRET_KEY,options);
 }
 
+
 //based on roles
 let findUser = async (req, res) => {
   let {id} = req.query;
@@ -226,8 +227,6 @@ const updatePassword = async (req, res) => {
   }
 };
 
-
-
 const uploadImage = async (req, res) => {
   cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
@@ -399,19 +398,21 @@ const jauthLogin = async (req, res) => {
 
     try {
         // Exchange code for access token with JAuth
-        const tokenResponse = await axios.get(`${process.env.JAUTH_BASE_URL}/user/getToken`, {
-            params: {
-                code,
-                client_id: process.env.JAUTH_CLIENT_ID, 
-                client_secret: process.env.JAUTH_CLIENT_SECRET,
-                redirect_uri: `${process.env.server_url}/auth/jauth/callback`
-            }
-        });
+    const tokenResponse =  await axios.post(`${process.env.JAUTH_BASE_URL}/oauth/getToken`,
+  {
+      code,
+      client_id: process.env.JAUTH_CLIENT_ID,
+      client_secret: process.env.JAUTH_CLIENT_SECRET,
+      redirect_uri: `${process.env.SERVER_BASE_URL}/user/jauth/callback`
+  }
+);
+
 
         const { access_token } = tokenResponse.data;
 
+        console.log('Access Token:', access_token);
 
-        const userResponse = await axios.get(`${process.env.JAUTH_BASE_URL}/user/getUser`, {
+        const userResponse = await axios.get(`${process.env.JAUTH_BASE_URL}/oauth/getUser`, {
             headers: {
                 Authorization: `Bearer ${access_token}`
             }

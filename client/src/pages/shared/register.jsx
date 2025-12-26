@@ -89,10 +89,11 @@ export function Login() {
 
 const jauthLogin = () => {
     const CLIENT_ID = import.meta.env.VITE_JAUTH_CLIENT_ID;
-    const REDIRECT_URI = `${window.location.origin}/auth/jauth/callback`;
+    const REDIRECT_URI = `${BASE_URL}/auth/jauth/callback`;
     const SCOPE = "profile email";
+    console.log(`${import.meta.env.VITE_JAUTH_BASE_URL}/oauth/authorize`);
     
-    window.location.href = `${import.meta.env.VITE_JAUTH_BASE_URL}/user/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}`;
+    window.location.href = `${import.meta.env.VITE_JAUTH_BASE_URL}/oauth/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${encodeURIComponent(SCOPE)}`;
 };
 
   if (user) return <Navigate to={from} replace />;

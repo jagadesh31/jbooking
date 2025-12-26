@@ -1,6 +1,6 @@
 import { useNavigate} from 'react-router-dom'
 import { useRef } from 'react'
-import { sendClicks } from '../services/main'
+// import { sendClicks } from '../services/main'
 import { authContext } from '../contexts/authContext'
 import { useContext } from 'react'
 
@@ -57,7 +57,8 @@ export function ShowsCard (props) {
   return (
     <div className='cardContainer cursor-pointer'>
       <div className='imageContainer overflow-hidden rounded-xl h-[185px] w-[130px] md:h-[285px] md:w-[200px] border-[#636363] hover:border-white border-2'>
-        <button onClick={(e)=>{sendClicks({"userId" :user?._id,"notes" :`clicked ${show.title} movie`});return navigate(`/${show.type}/${show._id}`)}} className='cursor-pointer'>
+        {/* <button onClick={(e)=>{sendClicks({"userId" :user?._id,"notes" :`clicked ${show.title} movie`});return navigate(`/${show.type}/${show._id}`)}} className='cursor-pointer'> */}
+           <button onClick={(e)=>{navigate(`/${show.type}/${show._id}`)}} className='cursor-pointer'>
           <img
             src={show.poster}
             draggable='false'
